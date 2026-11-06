@@ -2,21 +2,33 @@
 
 typedef long long int ll;
 
+ll arr[10000000];
+
 int main() {
 	int t;
-	ll n;
 	scanf("%d", &t);
 
-	for (int i = 0; i < t; i++) {
-		scanf("%lld", &n);
-		char arr[10000000];
-		ll k = 2;
-		for(;;k++) {
-			if (arr[k]) continue;
-			if (n % k == 0) break;
-			for (ll j=k; j<n;j+=j) arr[j] = 1;
+	arr[0] = 0;
+	arr[1] = 0;
+	for (ll i = 2; i < 10000000; i++) arr[i] = i;
+
+	for (ll i = 2; i * i < 10000000; i++) {
+		if (arr[i] != i) continue;	// kdyz uz je pro tohle cislo vypocitany f
+		// jedu od i*i - kdybych jel 2*i, uz je ale checknuta 2 atd
+		for (ll j = i * i; j < 10000000; j += i) {
+			if (arr[j] == j) arr[j] = i;
 		}
-		printf("%lld\n", k);
 	}
+
+	for (ll i = 2; i < 10000000; i++) {
+		arr[i] = arr[i - 1] + arr[i];
+	}
+
+	for (int i = 0; i < t; i++) {
+		ll n;
+		scanf("%lld", &n);
+		printf("%lld\n", arr[n]);
+	}
+
 	return 0;
 }
